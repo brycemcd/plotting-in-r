@@ -45,3 +45,26 @@ p <- ggplot(mtcars, aes(mpg, wt, color=cyl)) + geom_point()
 p
 mtcars <- ggplot(transform(mtcars, mpg=mpg^2))
 p %+% mtcars
+
+
+# geoms can be roughly divided into individual and collective geoms
+# NOTE: look up interaction() function
+
+library(nlme)
+# plots one line per boy
+p <- ggplot(Oxboys, aes(age, height, group=Subject)) + geom_line()
+p
+
+# contrast with drawing a regression line for all boys:
+p + geom_smooth(aes(group=1), method="lm", size=2, color="blue", fill="pink", alpha=0.2)
+
+# Graph a discrete scale:
+# heights at each occasion
+p <- ggplot(Oxboys, aes(Occasion, height)) + geom_boxplot()
+p + geom_line(aes(group=Subject), color="blue", alpha=0.3)
+
+# combining geoms and stats:
+
+d <- ggplot(diamonds, aes(carat)) + xlim(0, 3)
+d + stat_bin(aes(ymax=..count..), binwidth=0.1, geom='area')
+d + stat_bin(aes(size=..density..), binwidth=0.1, geom='point', position='identity')
