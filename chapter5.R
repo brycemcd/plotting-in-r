@@ -42,3 +42,24 @@ mp
 # Weighting can be done if the data is already summarized:
 qplot(percwhite, percbelowpoverty, data=midwest, weight=popdensity, size=popdensity) + 
   geom_smooth(mothod=lm, size=1)
+
+# color gradients can be applied to continuous variables with two, three or n colors:
+
+p <- qplot(cty, hwy, data=mpg, color=cty)
+p + scale_x_continuous()
+p + scale_color_gradient(low="green", high="red")
+p + scale_color_gradient2(low="green", high="red", mid = "pink")
+# NOTE: colours has to be spelled wrong here
+p + scale_color_gradientn(colours=c('red', 'yellow', 'green', 'blue'))
+
+# scaling discrete data is pretty similar:
+p <- qplot(brainwt, bodywt, data=msleep, log="xy", color=vore)
+p + scale_color_brewer(palette = 'Patel1')
+p + scale_color_manual(values=c('red', 'yellow', 'green', 'blue'))
+
+# things get really funky when assigning names to color mappings:
+huron <- data.frame(year = 1875:1972, level=LakeHuron)
+ggplot(huron, aes(year)) +
+  geom_line(aes(y=level-5, color="below")) + # mapping!
+  geom_line(aes(y=level+5, color="above")) + # mapping!
+  scale_color_manual("Direction", values=c('below' = 'blue', 'above' = 'red'))
